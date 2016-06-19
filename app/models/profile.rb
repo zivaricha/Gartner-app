@@ -3,12 +3,9 @@ class Profile < ActiveRecord::Base
   serialize :skills, Array
   serialize :experience, Array
 
-  def self.search(search)
-    if search
-      where("name like ?", "%#{search}%")
-    else
-  #    find(:all)
-    end
-  end
+
+
+  scope :by_name, ->(name) { where("name like ?", "%#{name}%") if name.present? }
+  scope :by_skills, ->(skills) { where("skills like ?", "%#{skills}%") if skills.present? }
 
 end

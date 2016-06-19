@@ -1,9 +1,10 @@
 class ProfilesController < ApplicationController
   def index
-    if params[:search]
-      @profiles = Profile.search(params[:search]).order("created_at DESC")
+    if params[:name] || params[:skills]
+      @profiles = Profile.by_name(params[:name]).by_skills(params[:skills]).order("id DESC")
+
     else
-     @profiles = Profile.all.order("created_at DESC")#Profile.search(params[:search])
+      @profiles = Profile.all.order("id DESC")#Profile.search(params[:search])
     end
 
   end
