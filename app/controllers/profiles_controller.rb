@@ -31,7 +31,7 @@ class ProfilesController < ApplicationController
       # Create a profile scraper instance based on the given url
       profile_scraper = Linkedin::Profile.new(params[:profile][:profile_url])
     rescue Exception=>e
-      render 'new', notice: "Oh no, i was unable to save your profile"
+      render 'new', notice: "Sorry, i was unable to scrape this profile"
 
     else
       # Init the profile model instance with the scraped data
@@ -44,13 +44,13 @@ class ProfilesController < ApplicationController
       @profile.education = profile_scraper.education
       @profile.experience = profile_scraper.experience
       @profile.score = profile_scraper.skills.size * Integer(profile_scraper.number_of_connections)
-      #binding.pry #break points the code and than can trace different parameters through server!
+      
 
       # Try and save the profile to the database
       if @profile.save
         redirect_to @profile, notice: "profile succefully saved"
       else
-        render 'new', notice: "Oh no, i was unable to save your profile"
+        render 'new', notice: "Sorry i was unable to save your profile"
       end
     end
 
@@ -66,5 +66,4 @@ class ProfilesController < ApplicationController
     params.require(:profile).permit(:profile_url)
   end
 
-  #, :summery, :skills, :experience, :education
 end
