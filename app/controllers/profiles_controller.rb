@@ -22,7 +22,7 @@ class ProfilesController < ApplicationController
 
     @profile.name = profile_scraper.name
     @profile.title = profile_scraper.title
-    @profile.position = profile_scraper.location
+    @profile.position = profile_scraper.experience.first
     @profile.profile_url = params[:profile][:profile_url]
     @profile.summery = profile_scraper.summary
     @profile.skills = profile_scraper.skills
