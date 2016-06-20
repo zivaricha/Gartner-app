@@ -26,7 +26,6 @@ class ProfilesController < ApplicationController
     # Create a new Profile model instance
     @profile = Profile.new profile_params
 
-
     begin
       # Create a profile scraper instance based on the given url
       profile_scraper = Linkedin::Profile.new(params[:profile][:profile_url])
@@ -44,7 +43,6 @@ class ProfilesController < ApplicationController
       @profile.education = profile_scraper.education
       @profile.experience = profile_scraper.experience
       @profile.score = profile_scraper.skills.size * Integer(profile_scraper.number_of_connections)
-      
 
       # Try and save the profile to the database
       if @profile.save

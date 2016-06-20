@@ -8,12 +8,17 @@
     </ul>
   <% end %>
 
-  <%= f.label :profile_url, "enter url here" %><br>
+  <%= f.label :profile_url, "Please enter a linkedin public profile url:" %><br>
   <%= f.text_field :profile_url %>
 
   <br>
   <br>
 
   <%= f.submit %>
+
+  <br>
+  <br>
+
+  <%= link_to "Search Existing Profile", profiles_path%>
 
 <% end %>

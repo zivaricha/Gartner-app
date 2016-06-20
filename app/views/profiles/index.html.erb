@@ -1,5 +1,7 @@
 <h1>Search Profiles</h1>
 
+
+
 <%= form_tag(profiles_path, :method => "get", id: "search-form") do %>
 
 	<%= text_field_tag :name, params[:name], placeholder: "Search Profile names" %>
@@ -36,7 +38,6 @@
 <% for profile in @profiles %>
   <li>
     <%= link_to profile.name, profile_path(profile) %>
-
   </li>
 <% end %>
 </ul>
