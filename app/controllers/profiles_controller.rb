@@ -1,42 +1,59 @@
 class ProfilesController < ApplicationController
+
   def index
-    if params[:name] || params[:skills]
-      @profiles = Profile.by_name(params[:name])
-      .by_title(params[:title])
-      .by_position(params[:position])
-      .by_summary(params[:summary])
-      .by_skills(params[:skills]).order("id DESC")
+    # If one or more of the search fields where entered, search by those fields
+    if params[:name] || params[:title] || params[:position] ||
+       params[:summary] || params[:skills]
+
+        @profiles = Profile.by_name(params[:name])
+        .by_title(params[:title])
+        .by_position(params[:position])
+        .by_summary(params[:summary])
+        .by_skills(params[:skills]).order("id DESC")
 
     else
-      @profiles = Profile.all.order("id DESC")#Profile.search(params[:search])
+      # If not, display all of the saved projects
+      @profiles = Profile.all.order("id DESC")
     end
 
   end
+
   def new
     @profile = Profile.new
   end
 
   def create
+    # Create a new Profile model instance
     @profile = Profile.new profile_params
-    profile_scraper = Linkedin::Profile.new(params[:profile][:profile_url])
 
-    @profile.name = profile_scraper.name
-    @profile.title = profile_scraper.title
-    @profile.position = profile_scraper.experience.first
-    @profile.profile_url = params[:profile][:profile_url]
-    @profile.summery = profile_scraper.summary
-    @profile.skills = profile_scraper.skills
-    @profile.education = profile_scraper.education
-    @profile.experience = profile_scraper.experience
 
-    #binding.pry #break points the code and than can trace different parameters through server!
-
-    if @profile.save
- #     binding.pry #break points the code and than can trace different parameters through server!
-      redirect_to @profile, notice: "profile succefully saved"
-    else
+    begin
+      # Create a profile scraper instance based on the given url
+      profile_scraper = Linkedin::Profile.new(params[:profile][:profile_url])
+    rescue Exception=>e
       render 'new', notice: "Oh no, i was unable to save your profile"
+
+    else
+      # Init the profile model instance with the scraped data
+      @profile.name = profile_scraper.name
+      @profile.title = profile_scraper.title
+      @profile.position = profile_scraper.experience.first
+      @profile.profile_url = params[:profile][:profile_url]
+      @profile.summery = profile_scraper.summary
+      @profile.skills = profile_scraper.skills
+      @profile.education = profile_scraper.education
+      @profile.experience = profile_scraper.experience
+      @profile.score = profile_scraper.skills.size * Integer(profile_scraper.number_of_connections)
+      #binding.pry #break points the code and than can trace different parameters through server!
+
+      # Try and save the profile to the database
+      if @profile.save
+        redirect_to @profile, notice: "profile succefully saved"
+      else
+        render 'new', notice: "Oh no, i was unable to save your profile"
+      end
     end
+
   end
 
   def show
@@ -46,7 +63,7 @@ class ProfilesController < ApplicationController
   private
 
   def profile_params
-    params.require(:profile).permit(:name, :title, :position, :profile_url)
+    params.require(:profile).permit(:profile_url)
   end
 
   #, :summery, :skills, :experience, :education

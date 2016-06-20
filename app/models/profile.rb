@@ -1,4 +1,5 @@
 class Profile < ActiveRecord::Base
+  #serialzing education, skills and experience fields to be saved as arrays on the database
   serialize :education, Array
   serialize :skills, Array
   serialize :experience, Array

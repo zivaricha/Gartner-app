@@ -1,4 +1,4 @@
-<h1>Hello world</h1>
+<h1>Search Profiles</h1>
 
 <%= form_tag(profiles_path, :method => "get", id: "search-form") do %>
 
@@ -23,16 +23,20 @@
 	<br>
 
 	<%= text_field_tag :skills, params[:skills], placeholder: "Search Skills" %>
+	<br>
+	<br>
 	<%= submit_tag "Search" %>
 
 <% end %>
 
+<br>
+
+<h4>Search Results:</h4>
 <ul>
 <% for profile in @profiles %>
   <li>
     <%= link_to profile.name, profile_path(profile) %>
-    <%= link_to "Edit", edit_profile_path(profile) %>
-    <%= link_to "Destroy", profile_url(profile), :method => :delete %>
+
   </li>
 <% end %>
 </ul>
