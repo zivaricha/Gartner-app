@@ -1,9 +1,30 @@
 <h1>Hello world</h1>
 
 <%= form_tag(profiles_path, :method => "get", id: "search-form") do %>
-<%= text_field_tag :name, params[:name], placeholder: "Search Profiles" %><br>
-<%= text_field_tag :skills, params[:skills], placeholder: "Search Skills" %>
-<%= submit_tag "Search" %>
+
+	<%= text_field_tag :name, params[:name], placeholder: "Search Profile names" %>
+
+	<br>
+	<br>
+
+	<%= text_field_tag :title, params[:title], placeholder: "Search title" %>
+
+	<br>
+	<br>
+
+	<%= text_field_tag :position, params[:position], placeholder: "Search position" %>
+
+	<br>
+	<br>
+
+	<%= text_field_tag :summary, params[:summary], placeholder: "Search summery" %>
+
+	<br>
+	<br>
+
+	<%= text_field_tag :skills, params[:skills], placeholder: "Search Skills" %>
+	<%= submit_tag "Search" %>
+
 <% end %>
 
 <ul>
